@@ -28,7 +28,7 @@ class QuoteWriter implements QuoteWriterInterface
     public function update(QuoteTransfer $quoteTransfer): ?QuoteTransfer
     {
         $quoteResponseTransfer = $this->quoteFacade->updateQuote($quoteTransfer);
-        $quoteTransfer = $quoteResponseTransfer->getQuote();
+        $quoteTransfer = $quoteResponseTransfer->getQuoteTransfer();
 
         if ($quoteTransfer === null || !$quoteResponseTransfer->getIsSuccessful()) {
             return null;

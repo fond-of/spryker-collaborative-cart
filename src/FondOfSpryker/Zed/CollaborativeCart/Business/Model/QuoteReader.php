@@ -36,7 +36,7 @@ class QuoteReader implements QuoteReaderInterface
         }
 
         $quoteResponseTransfer = $this->quoteFacade->findQuoteById($idQuote);
-        $quoteTransfer = $quoteResponseTransfer->getQuote();
+        $quoteTransfer = $quoteResponseTransfer->getQuoteTransfer();
 
         if (
             $quoteTransfer === null

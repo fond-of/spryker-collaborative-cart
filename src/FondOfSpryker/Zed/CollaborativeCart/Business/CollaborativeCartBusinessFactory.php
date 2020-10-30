@@ -44,6 +44,7 @@ class CollaborativeCartBusinessFactory extends AbstractBusinessFactory
             $this->createQuoteReader(),
             $this->createQuoteWriter(),
             $this->createCompanyUserReader(),
+            $this->getCustomerFacade(),
             $this->getPermissionFacade()
         );
     }

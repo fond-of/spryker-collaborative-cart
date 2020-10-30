@@ -4,6 +4,7 @@ namespace FondOfSpryker\Zed\CollaborativeCart\Business\Model;
 
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface;
 use Generated\Shared\Transfer\ClaimCartRequestTransfer;
+use Generated\Shared\Transfer\CompanyUserCollectionTransfer;
 use Generated\Shared\Transfer\CompanyUserCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -58,10 +59,30 @@ class CompanyUserReader implements CompanyUserReaderInterface
         $companyUserCollectionTransfer = $this->companyUserFacade
             ->getCompanyUserCollection($companyUserCriteriaFilterTransfer);
 
-        if ($companyUserCollectionTransfer->getCompanyUsers()->count() !== 1) {
+        if ($companyUserCollectionTransfer->getCompanyUsers()->count() === 0) {
             return null;
         }
 
-        return $companyUserCollectionTransfer->getCompanyUsers()->offsetGet(0);
+        return $this->findCompanyUserInCompanyUserCollection($companyUserCollectionTransfer, $idCustomer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\CompanyUserCollectionTransfer $companyUserCollectionTransfer
+     * @param int $idCustomer
+     * @return \Generated\Shared\Transfer\CompanyUserTransfer|null
+     */
+    protected function findCompanyUserInCompanyUserCollection(
+        CompanyUserCollectionTransfer $companyUserCollectionTransfer,
+        int $idCustomer
+    ): ?CompanyUserTransfer {
+        foreach ($companyUserCollectionTransfer->getCompanyUsers() as $companyUserTransfer) {
+            if ($companyUserTransfer->getFkCustomer() !== $idCustomer) {
+                continue;
+            }
+
+            return $companyUserTransfer;
+        }
+
+        return null;
     }
 }

@@ -32,7 +32,7 @@ class CollaborativeCartStub implements CollaborativeCartStubInterface
     public function claimCart(ClaimCartRequestTransfer $claimCartRequestTransfer): ClaimCartResponseTransfer
     {
         /** @var \Generated\Shared\Transfer\ClaimCartRequestTransfer $criteriaFilterTransfer */
-        $claimCartRequestResponseTransfer = $this->zedStub->call('/collaborative-cart/gateway/claim-cart', $claimCartRequestTransfer);
+        $claimCartRequestResponseTransfer = $this->zedRequestClient->call('/collaborative-cart/gateway/claim-cart', $claimCartRequestTransfer);
 
         return $claimCartRequestResponseTransfer;
     }
