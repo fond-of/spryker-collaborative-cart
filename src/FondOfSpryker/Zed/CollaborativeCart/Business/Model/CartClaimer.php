@@ -10,6 +10,7 @@ use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToPer
 use Generated\Shared\Transfer\ClaimCartRequestTransfer;
 use Generated\Shared\Transfer\ClaimCartResponseTransfer;
 use Generated\Shared\Transfer\CompanyUserTransfer;
+use Generated\Shared\Transfer\CustomerTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 class CartClaimer implements CartClaimerInterface
@@ -25,11 +26,6 @@ class CartClaimer implements CartClaimerInterface
     protected $companyUserReader;
 
     /**
-     * @var \FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeInterface
-     */
-    protected $customerFacade;
-
-    /**
      * @var \FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToPermissionFacadeInterface
      */
     protected $permissionFacade;
@@ -40,6 +36,8 @@ class CartClaimer implements CartClaimerInterface
     protected $quoteWriter;
 
     /**
+     * CartClaimer constructor.
+     *
      * @param \FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteReaderInterface $quoteReader
      * @param \FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteWriterInterface $quoteWriter
      * @param \FondOfSpryker\Zed\CollaborativeCart\Business\Model\CompanyUserReaderInterface $companyUserReader
@@ -49,13 +47,11 @@ class CartClaimer implements CartClaimerInterface
         QuoteReaderInterface $quoteReader,
         QuoteWriterInterface $quoteWriter,
         CompanyUserReaderInterface $companyUserReader,
-        CollaborativeCartToCustomerFacadeInterface $customerFacade,
         CollaborativeCartToPermissionFacadeInterface $permissionFacade
     ) {
         $this->quoteReader = $quoteReader;
         $this->quoteWriter = $quoteWriter;
         $this->companyUserReader = $companyUserReader;
-        $this->customerFacade = $customerFacade;
         $this->permissionFacade = $permissionFacade;
     }
 
@@ -94,7 +90,7 @@ class CartClaimer implements CartClaimerInterface
             ->setOriginalCustomerReference($quoteTransfer->getCustomerReference())
             ->setCompanyUserReference($companyUserTransfer->getCompanyUserReference())
             ->setCustomerReference($claimCartRequestTransfer->getNewCustomerReference())
-            ->setCustomer($this->customerFacade->findByReference($claimCartRequestTransfer->getNewCustomerReference()));
+            ->setCustomer((new CustomerTransfer())->setCustomerReference($claimCartRequestTransfer->getNewCustomerReference()));
 
         return (new ClaimCartResponseTransfer())
             ->setIsSuccess(true)
