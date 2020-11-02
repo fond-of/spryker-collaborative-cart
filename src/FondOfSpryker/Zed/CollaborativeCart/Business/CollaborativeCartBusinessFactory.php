@@ -22,6 +22,7 @@ use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
 
 /**
  * @method \FondOfSpryker\Zed\CollaborativeCart\CollaborativeCartConfig getConfig()
+ * @method \FondOfSpryker\Zed\CollaborativeCart\Persistence\CollaborativeCartRepositoryInterface getRepository()
  */
 class CollaborativeCartBusinessFactory extends AbstractBusinessFactory
 {
@@ -32,7 +33,8 @@ class CollaborativeCartBusinessFactory extends AbstractBusinessFactory
     {
         return new QuoteExpander(
             $this->getCustomerFacade(),
-            $this->getCompanyUserReferenceFacade());
+            $this->getCompanyUserReferenceFacade()
+        );
     }
 
     /**
@@ -69,7 +71,9 @@ class CollaborativeCartBusinessFactory extends AbstractBusinessFactory
      */
     protected function createCompanyUserReader(): CompanyUserReaderInterface
     {
-        return new CompanyUserReader($this->getCompanyUserFacade());
+        return new CompanyUserReader(
+            $this->getRepository()
+        );
     }
 
     /**

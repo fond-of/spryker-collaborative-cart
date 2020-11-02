@@ -4,7 +4,7 @@ namespace FondOfSpryker\Zed\CollaborativeCart\Business\Model;
 
 use ArrayObject;
 use Codeception\Test\Unit;
-use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface;
+use FondOfSpryker\Zed\CollaborativeCart\Persistence\CollaborativeCartRepositoryInterface;
 use Generated\Shared\Transfer\ClaimCartRequestTransfer;
 use Generated\Shared\Transfer\CompanyUserCollectionTransfer;
 use Generated\Shared\Transfer\CompanyUserCriteriaFilterTransfer;
@@ -14,9 +14,9 @@ use Generated\Shared\Transfer\QuoteTransfer;
 class CompanyUserReaderTest extends Unit
 {
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface
+     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CollaborativeCart\Persistence\CollaborativeCartRepositoryInterface
      */
-    protected $companyUserFacadeMock;
+    protected $collaborativeCartRepositoryMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\ClaimCartRequestTransfer
@@ -55,7 +55,7 @@ class CompanyUserReaderTest extends Unit
     {
         parent::_before();
 
-        $this->companyUserFacadeMock = $this->getMockBuilder(CollaborativeCartToCompanyUserFacadeInterface::class)
+        $this->collaborativeCartRepositoryMock = $this->getMockBuilder(CollaborativeCartRepositoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -79,7 +79,7 @@ class CompanyUserReaderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->companyUserReader = new CompanyUserReader($this->companyUserFacadeMock);
+        $this->companyUserReader = new CompanyUserReader($this->collaborativeCartRepositoryMock);
     }
 
     /**
@@ -107,8 +107,8 @@ class CompanyUserReaderTest extends Unit
             ->method('getFkCompanyBusinessUnit')
             ->willReturn($fkCompanyBusinessUnit);
 
-        $this->companyUserFacadeMock->expects(self::atLeastOnce())
-            ->method('getCompanyUserCollection')
+        $this->collaborativeCartRepositoryMock->expects(self::atLeastOnce())
+            ->method('getCompanyUserCollectionByCompanyUserCriteriaFilterTransfer')
             ->with(
                 self::callback(
                     static function (CompanyUserCriteriaFilterTransfer $companyUserCriteriaFilterTransfer) use ($newIdCustomer, $fkCompany, $fkCompanyBusinessUnit) {
@@ -151,8 +151,8 @@ class CompanyUserReaderTest extends Unit
         $this->companyUserTransferMock->expects(self::never())
             ->method('getFkCompanyBusinessUnit');
 
-        $this->companyUserFacadeMock->expects(self::never())
-            ->method('getCompanyUserCollection');
+        $this->collaborativeCartRepositoryMock->expects(self::never())
+            ->method('getCompanyUserCollectionByCompanyUserCriteriaFilterTransfer');
 
         $this->companyUserCollectionTransferMock->expects(self::never())
             ->method('getCompanyUsers');
@@ -187,8 +187,8 @@ class CompanyUserReaderTest extends Unit
         $this->companyUserTransferMock->expects(self::never())
             ->method('getFkCompanyBusinessUnit');
 
-        $this->companyUserFacadeMock->expects(self::never())
-            ->method('getCompanyUserCollection');
+        $this->collaborativeCartRepositoryMock->expects(self::never())
+            ->method('getCompanyUserCollectionByCompanyUserCriteriaFilterTransfer');
 
         $this->companyUserCollectionTransferMock->expects(self::never())
             ->method('getCompanyUsers');
@@ -227,8 +227,8 @@ class CompanyUserReaderTest extends Unit
             ->method('getFkCompanyBusinessUnit')
             ->willReturn($fkCompanyBusinessUnit);
 
-        $this->companyUserFacadeMock->expects(self::atLeastOnce())
-            ->method('getCompanyUserCollection')
+        $this->collaborativeCartRepositoryMock->expects(self::atLeastOnce())
+            ->method('getCompanyUserCollectionByCompanyUserCriteriaFilterTransfer')
             ->with(
                 self::callback(
                     static function (CompanyUserCriteriaFilterTransfer $companyUserCriteriaFilterTransfer) use ($newIdCustomer, $fkCompany, $fkCompanyBusinessUnit) {

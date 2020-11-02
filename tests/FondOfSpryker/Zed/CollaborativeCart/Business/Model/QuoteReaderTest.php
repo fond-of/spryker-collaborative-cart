@@ -81,7 +81,7 @@ class QuoteReaderTest extends Unit
             ->willReturn($this->quoteResponseTransferMock);
 
         $this->quoteResponseTransferMock->expects(self::atLeastOnce())
-            ->method('getQuote')
+            ->method('getQuoteTransfer')
             ->willReturn($this->quoteTransferMock);
 
         $this->quoteResponseTransferMock->expects(self::atLeastOnce())
@@ -117,7 +117,7 @@ class QuoteReaderTest extends Unit
             ->method('findQuoteById');
 
         $this->quoteResponseTransferMock->expects(self::never())
-            ->method('getQuote');
+            ->method('getQuoteTransfer');
 
         $this->quoteResponseTransferMock->expects(self::never())
             ->method('getIsSuccessful');
@@ -152,7 +152,7 @@ class QuoteReaderTest extends Unit
             ->willReturn($this->quoteResponseTransferMock);
 
         $this->quoteResponseTransferMock->expects(self::atLeastOnce())
-            ->method('getQuote')
+            ->method('getQuoteTransfer')
             ->willReturn($this->quoteTransferMock);
 
         $this->quoteResponseTransferMock->expects(self::atLeastOnce())

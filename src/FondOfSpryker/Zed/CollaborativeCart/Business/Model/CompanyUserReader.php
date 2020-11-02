@@ -2,9 +2,8 @@
 
 namespace FondOfSpryker\Zed\CollaborativeCart\Business\Model;
 
-use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface;
+use FondOfSpryker\Zed\CollaborativeCart\Persistence\CollaborativeCartRepositoryInterface;
 use Generated\Shared\Transfer\ClaimCartRequestTransfer;
-use Generated\Shared\Transfer\CompanyUserCollectionTransfer;
 use Generated\Shared\Transfer\CompanyUserCriteriaFilterTransfer;
 use Generated\Shared\Transfer\CompanyUserTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -12,16 +11,17 @@ use Generated\Shared\Transfer\QuoteTransfer;
 class CompanyUserReader implements CompanyUserReaderInterface
 {
     /**
-     * @var \FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface
+     * @var \FondOfSpryker\Zed\CollaborativeCart\Persistence\CollaborativeCartRepositoryInterface
      */
-    protected $companyUserFacade;
+    protected $collaborativeCartRepository;
 
     /**
-     * @param \FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface $companyUserFacade
+     * @param \FondOfSpryker\Zed\CollaborativeCart\Persistence\CollaborativeCartRepositoryInterface $collaborativeCartRepository
      */
-    public function __construct(CollaborativeCartToCompanyUserFacadeInterface $companyUserFacade)
-    {
-        $this->companyUserFacade = $companyUserFacade;
+    public function __construct(
+        CollaborativeCartRepositoryInterface $collaborativeCartRepository
+    ) {
+        $this->collaborativeCartRepository = $collaborativeCartRepository;
     }
 
     /**
@@ -42,8 +42,7 @@ class CompanyUserReader implements CompanyUserReaderInterface
 
         $companyUser = $quoteTransfer->getCompanyUser();
 
-        if (
-            $companyUser === null
+        if ($companyUser === null
             || $companyUser->getFkCompany() === null
             || $companyUser->getFkCompanyBusinessUnit() === null
         ) {
@@ -56,33 +55,13 @@ class CompanyUserReader implements CompanyUserReaderInterface
             ->setIdCompanyBusinessUnit($companyUser->getFkCompanyBusinessUnit())
             ->setIsActive(true);
 
-        $companyUserCollectionTransfer = $this->companyUserFacade
-            ->getCompanyUserCollection($companyUserCriteriaFilterTransfer);
+        $companyUserCollectionTransfer = $this->collaborativeCartRepository
+            ->getCompanyUserCollectionByCompanyUserCriteriaFilterTransfer($companyUserCriteriaFilterTransfer);
 
-        if ($companyUserCollectionTransfer->getCompanyUsers()->count() === 0) {
+        if ($companyUserCollectionTransfer->getCompanyUsers()->count() !== 1) {
             return null;
         }
 
-        return $this->findCompanyUserInCompanyUserCollection($companyUserCollectionTransfer, $idCustomer);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\CompanyUserCollectionTransfer $companyUserCollectionTransfer
-     * @param int $idCustomer
-     * @return \Generated\Shared\Transfer\CompanyUserTransfer|null
-     */
-    protected function findCompanyUserInCompanyUserCollection(
-        CompanyUserCollectionTransfer $companyUserCollectionTransfer,
-        int $idCustomer
-    ): ?CompanyUserTransfer {
-        foreach ($companyUserCollectionTransfer->getCompanyUsers() as $companyUserTransfer) {
-            if ($companyUserTransfer->getFkCustomer() !== $idCustomer) {
-                continue;
-            }
-
-            return $companyUserTransfer;
-        }
-
-        return null;
+        return $companyUserCollectionTransfer->getCompanyUsers()->offsetGet(0);
     }
 }

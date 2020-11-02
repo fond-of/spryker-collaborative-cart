@@ -62,7 +62,7 @@ class QuoteWriterTest extends Unit
             ->willReturn($this->quoteResponseTransferMock);
 
         $this->quoteResponseTransferMock->expects(self::atLeastOnce())
-            ->method('getQuote')
+            ->method('getQuoteTransfer')
             ->willReturn(null);
 
         $this->quoteResponseTransferMock->expects(self::never())
@@ -85,7 +85,7 @@ class QuoteWriterTest extends Unit
             ->willReturn($this->quoteResponseTransferMock);
 
         $this->quoteResponseTransferMock->expects(self::atLeastOnce())
-            ->method('getQuote')
+            ->method('getQuoteTransfer')
             ->willReturn($this->quoteTransferMock);
 
         $this->quoteResponseTransferMock->expects(self::atLeastOnce())
