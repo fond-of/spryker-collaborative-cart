@@ -11,6 +11,7 @@ use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCom
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToPermissionFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToQuoteFacadeInterface;
+use FondOfSpryker\Zed\CollaborativeCart\Persistence\CollaborativeCartRepository;
 use Spryker\Zed\Kernel\Container;
 
 class CollaborativeCartBusinessFactoryTest extends Unit
@@ -51,6 +52,11 @@ class CollaborativeCartBusinessFactoryTest extends Unit
     protected $collaborativeCartBusinessFactory;
 
     /**
+     * @var \FondOfSpryker\Zed\CollaborativeCart\Persistence\CollaborativeCartRepository|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $repositoryMock;
+
+    /**
      * @return void
      */
     protected function _before(): void
@@ -81,8 +87,13 @@ class CollaborativeCartBusinessFactoryTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->repositoryMock = $this->getMockBuilder(CollaborativeCartRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->collaborativeCartBusinessFactory = new CollaborativeCartBusinessFactory();
         $this->collaborativeCartBusinessFactory->setContainer($this->containerMock);
+        $this->collaborativeCartBusinessFactory->setRepository($this->repositoryMock);
     }
 
     /**
@@ -99,12 +110,10 @@ class CollaborativeCartBusinessFactoryTest extends Unit
             ->withConsecutive(
                 [CollaborativeCartDependencyProvider::FACADE_QUOTE],
                 [CollaborativeCartDependencyProvider::FACADE_QUOTE],
-                [CollaborativeCartDependencyProvider::FACADE_COMPANY_USER],
                 [CollaborativeCartDependencyProvider::FACADE_PERMISSION]
             )->willReturnOnConsecutiveCalls(
                 $this->quoteFacadeMock,
                 $this->quoteFacadeMock,
-                $this->companyUserFacadeMock,
                 $this->permissionFacadeMock
             );
 
