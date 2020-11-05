@@ -6,7 +6,6 @@ use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\CartClaimer;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteExpander;
 use FondOfSpryker\Zed\CollaborativeCart\CollaborativeCartDependencyProvider;
-use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserReferenceFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToPermissionFacadeInterface;
@@ -20,11 +19,6 @@ class CollaborativeCartBusinessFactoryTest extends Unit
      * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Zed\Kernel\Container
      */
     protected $containerMock;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface
-     */
-    protected $companyUserFacadeMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserReferenceFacadeInterface
@@ -64,10 +58,6 @@ class CollaborativeCartBusinessFactoryTest extends Unit
         parent::_before();
 
         $this->containerMock = $this->getMockBuilder(Container::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->companyUserFacadeMock = $this->getMockBuilder(CollaborativeCartToCompanyUserFacadeInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
