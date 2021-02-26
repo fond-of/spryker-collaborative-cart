@@ -12,7 +12,6 @@
     "php": ">=7.2",
     "fond-of-spryker/company-user-reference": "dev-master",
     "fond-of-spryker/company-user-reference-quote-connector": "dev-master",
-    "fond-of-codeception/spryker": "^1.0.0",
     "spryker/customer": "^7.0.0",
     "spryker/company-user": "^2.0.0",
     "spryker/quote": "^2.0.0",
