@@ -20,7 +20,6 @@ class CollaborativeCartRepository extends AbstractRepository implements Collabor
      *
      * @api
      *
-     *
      * @param \Generated\Shared\Transfer\CompanyUserCriteriaFilterTransfer $criteriaFilterTransfer
      *
      * @return \Generated\Shared\Transfer\CompanyUserCollectionTransfer

@@ -5,7 +5,6 @@ namespace FondOfSpryker\Zed\CollaborativeCart\Business\Model;
 use Exception;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Exception\QuoteCouldNotBeClaimedException;
 use FondOfSpryker\Zed\CollaborativeCart\Communication\Plugin\PermissionExtension\CollaborateCartPermissionPlugin;
-use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToPermissionFacadeInterface;
 use Generated\Shared\Transfer\ClaimCartRequestTransfer;
 use Generated\Shared\Transfer\ClaimCartResponseTransfer;
@@ -36,8 +35,6 @@ class CartClaimer implements CartClaimerInterface
     protected $quoteWriter;
 
     /**
-     * CartClaimer constructor.
-     *
      * @param \FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteReaderInterface $quoteReader
      * @param \FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteWriterInterface $quoteWriter
      * @param \FondOfSpryker\Zed\CollaborativeCart\Business\Model\CompanyUserReaderInterface $companyUserReader

@@ -9,6 +9,7 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
  * @method \FondOfSpryker\Zed\CollaborativeCart\Business\CollaborativeCartBusinessFactory getFactory()
+ * @method \FondOfSpryker\Zed\CollaborativeCart\Persistence\CollaborativeCartRepositoryInterface getRepository()
  */
 class CollaborativeCartFacade extends AbstractFacade implements CollaborativeCartFacadeInterface
 {
