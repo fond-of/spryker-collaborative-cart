@@ -2,6 +2,7 @@
 
 namespace FondOfSpryker\Zed\CollaborativeCart\Persistence;
 
+use FondOfSpryker\Zed\CollaborativeCart\CollaborativeCartDependencyProvider;
 use FondOfSpryker\Zed\CompanyUsersRestApi\Persistence\Mapper\CompanyUserMapper;
 use FondOfSpryker\Zed\CompanyUsersRestApi\Persistence\Mapper\CompanyUserMapperInterface;
 use Orm\Zed\CompanyUser\Persistence\SpyCompanyUserQuery;
@@ -16,9 +17,9 @@ class CollaborativeCartPersistenceFactory extends AbstractPersistenceFactory
     /**
      * @return \Orm\Zed\CompanyUser\Persistence\SpyCompanyUserQuery
      */
-    public function createCompanyUserQuery(): SpyCompanyUserQuery
+    public function getCompanyUserQuery(): SpyCompanyUserQuery
     {
-        return SpyCompanyUserQuery::create();
+        return $this->getProvidedDependency(CollaborativeCartDependencyProvider::PROPEL_QUERY_COMPANY_USER);
     }
 
     /**

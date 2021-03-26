@@ -2,21 +2,22 @@
 
 namespace FondOfSpryker\Zed\CollaborativeCart;
 
-use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeBridge;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserReferenceFacadeBridge;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeBridge;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToPermissionFacadeBridge;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToQuoteFacadeBridge;
+use Orm\Zed\CompanyUser\Persistence\Base\SpyCompanyUserQuery;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 
 class CollaborativeCartDependencyProvider extends AbstractBundleDependencyProvider
 {
-    public const FACADE_COMPANY_USER = 'FACADE_COMPANY_USER';
     public const FACADE_COMPANY_USER_REFERENCE = 'FACADE_COMPANY_USER_REFERENCE';
     public const FACADE_CUSTOMER = 'FACADE_CUSTOMER';
     public const FACADE_PERMISSION = 'FACADE_PERMISSION';
     public const FACADE_QUOTE = 'FACADE_QUOTE';
+
+    public const PROPEL_QUERY_COMPANY_USER = 'PROPEL_QUERY_COMPANY_USER';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
@@ -27,7 +28,6 @@ class CollaborativeCartDependencyProvider extends AbstractBundleDependencyProvid
     {
         $container = parent::provideBusinessLayerDependencies($container);
 
-        $container = $this->addCompanyUserFacade($container);
         $container = $this->addCompanyUserReferenceFacade($container);
         $container = $this->addCustomerFacade($container);
         $container = $this->addPermissionFacade($container);
@@ -41,11 +41,11 @@ class CollaborativeCartDependencyProvider extends AbstractBundleDependencyProvid
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    protected function addCompanyUserFacade(Container $container): Container
+    public function providePersistenceLayerDependencies(Container $container): Container
     {
-        $container[static::FACADE_COMPANY_USER] = static function (Container $container) {
-            return new CollaborativeCartToCompanyUserFacadeBridge($container->getLocator()->companyUser()->facade());
-        };
+        $container = parent::providePersistenceLayerDependencies($container);
+
+        $container = $this->addCompanyUserQuery($container);
 
         return $container;
     }
@@ -109,6 +109,20 @@ class CollaborativeCartDependencyProvider extends AbstractBundleDependencyProvid
             return new CollaborativeCartToQuoteFacadeBridge(
                 $container->getLocator()->quote()->facade()
             );
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCompanyUserQuery(Container $container): Container
+    {
+        $container[static::PROPEL_QUERY_COMPANY_USER] = static function () {
+            return SpyCompanyUserQuery::create();
         };
 
         return $container;

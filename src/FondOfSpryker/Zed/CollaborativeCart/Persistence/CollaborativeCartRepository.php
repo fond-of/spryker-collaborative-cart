@@ -20,7 +20,6 @@ class CollaborativeCartRepository extends AbstractRepository implements Collabor
      *
      * @api
      *
-     *
      * @param \Generated\Shared\Transfer\CompanyUserCriteriaFilterTransfer $criteriaFilterTransfer
      *
      * @return \Generated\Shared\Transfer\CompanyUserCollectionTransfer
@@ -29,10 +28,10 @@ class CollaborativeCartRepository extends AbstractRepository implements Collabor
         CompanyUserCriteriaFilterTransfer $criteriaFilterTransfer
     ): CompanyUserCollectionTransfer {
         $queryCompanyUser = $this->getFactory()
-            ->createCompanyUserQuery()
+            ->getCompanyUserQuery()
             ->joinWithCustomer()
             ->useCustomerQuery()
-            ->filterByAnonymizedAt(null, Criteria::ISNULL)
+                ->filterByAnonymizedAt(null, Criteria::ISNULL)
             ->endUse();
 
         $this->applyFilters($queryCompanyUser, $criteriaFilterTransfer);
@@ -94,13 +93,13 @@ class CollaborativeCartRepository extends AbstractRepository implements Collabor
 
             $paginationModel = $query->paginate($page, $maxPerPage);
 
-            $paginationTransfer->setNbResults($paginationModel->getNbResults());
-            $paginationTransfer->setFirstIndex($paginationModel->getFirstIndex());
-            $paginationTransfer->setLastIndex($paginationModel->getLastIndex());
-            $paginationTransfer->setFirstPage($paginationModel->getFirstPage());
-            $paginationTransfer->setLastPage($paginationModel->getLastPage());
-            $paginationTransfer->setNextPage($paginationModel->getNextPage());
-            $paginationTransfer->setPreviousPage($paginationModel->getPreviousPage());
+            $paginationTransfer->setNbResults($paginationModel->getNbResults())
+                ->setFirstIndex($paginationModel->getFirstIndex())
+                ->setLastIndex($paginationModel->getLastIndex())
+                ->setFirstPage($paginationModel->getFirstPage())
+                ->setLastPage($paginationModel->getLastPage())
+                ->setNextPage($paginationModel->getNextPage())
+                ->setPreviousPage($paginationModel->getPreviousPage());
 
             return $paginationModel->getResults();
         }

@@ -3,14 +3,12 @@
 namespace FondOfSpryker\Zed\CollaborativeCart;
 
 use Codeception\Test\Unit;
-use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeBridge;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserReferenceFacadeBridge;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeBridge;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToPermissionFacadeBridge;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToQuoteFacadeBridge;
 use FondOfSpryker\Zed\CompanyUserReference\Business\CompanyUserReferenceFacadeInterface;
 use Spryker\Shared\Kernel\BundleProxy;
-use Spryker\Zed\CompanyUser\Business\CompanyUserFacadeInterface;
 use Spryker\Zed\Customer\Business\CustomerFacadeInterface;
 use Spryker\Zed\Kernel\Locator;
 use Spryker\Zed\Permission\Business\PermissionFacadeInterface;
@@ -33,11 +31,6 @@ class CollaborativeCartDependencyProviderTest extends Unit
      * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Shared\Kernel\BundleProxy
      */
     protected $bundleProxyMock;
-
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|\Spryker\Zed\CompanyUser\Business\CompanyUserFacadeInterface
-     */
-    protected $companyUserFacadeMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CompanyUserReference\Business\CompanyUserReferenceFacadeInterface
@@ -83,10 +76,6 @@ class CollaborativeCartDependencyProviderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->companyUserFacadeMock = $this->getMockBuilder(CompanyUserFacadeInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->companyUserReferenceFacadeMock = $this->getMockBuilder(CompanyUserReferenceFacadeInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -117,14 +106,13 @@ class CollaborativeCartDependencyProviderTest extends Unit
 
         $this->locatorMock->expects(self::atLeastOnce())
             ->method('__call')
-            ->withConsecutive(['companyUser'], ['companyUserReference'], ['customer'], ['permission'], ['quote'])
+            ->withConsecutive(['companyUserReference'], ['customer'], ['permission'], ['quote'])
             ->willReturn($this->bundleProxyMock);
 
         $this->bundleProxyMock->expects(self::atLeastOnce())
             ->method('__call')
             ->with('facade')
             ->willReturnOnConsecutiveCalls(
-                $this->companyUserFacadeMock,
                 $this->companyUserReferenceFacadeMock,
                 $this->customerFacadeMock,
                 $this->permissionFacadeMock,
@@ -136,11 +124,6 @@ class CollaborativeCartDependencyProviderTest extends Unit
         );
 
         self::assertEquals($this->containerMock, $container);
-
-        self::assertInstanceOf(
-            CollaborativeCartToCompanyUserFacadeBridge::class,
-            $container[CollaborativeCartDependencyProvider::FACADE_COMPANY_USER]
-        );
 
         self::assertInstanceOf(
             CollaborativeCartToCompanyUserReferenceFacadeBridge::class,

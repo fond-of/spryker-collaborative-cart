@@ -13,7 +13,6 @@ use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteReaderInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteWriter;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteWriterInterface;
 use FondOfSpryker\Zed\CollaborativeCart\CollaborativeCartDependencyProvider;
-use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserReferenceFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToPermissionFacadeInterface;
@@ -74,14 +73,6 @@ class CollaborativeCartBusinessFactory extends AbstractBusinessFactory
         return new CompanyUserReader(
             $this->getRepository()
         );
-    }
-
-    /**
-     * @return \FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserFacadeInterface
-     */
-    protected function getCompanyUserFacade(): CollaborativeCartToCompanyUserFacadeInterface
-    {
-        return $this->getProvidedDependency(CollaborativeCartDependencyProvider::FACADE_COMPANY_USER);
     }
 
     /**

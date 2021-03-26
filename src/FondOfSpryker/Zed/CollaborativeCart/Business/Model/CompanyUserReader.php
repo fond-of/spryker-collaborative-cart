@@ -42,7 +42,8 @@ class CompanyUserReader implements CompanyUserReaderInterface
 
         $companyUser = $quoteTransfer->getCompanyUser();
 
-        if ($companyUser === null
+        if (
+            $companyUser === null
             || $companyUser->getFkCompany() === null
             || $companyUser->getFkCompanyBusinessUnit() === null
         ) {
