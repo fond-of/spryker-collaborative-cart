@@ -12,6 +12,8 @@ use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteReader;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteReaderInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteWriter;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteWriterInterface;
+use FondOfSpryker\Zed\CollaborativeCart\Business\Releaser\CartReleaser;
+use FondOfSpryker\Zed\CollaborativeCart\Business\Releaser\CartReleaserInterface;
 use FondOfSpryker\Zed\CollaborativeCart\CollaborativeCartDependencyProvider;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserReferenceFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeInterface;
@@ -46,6 +48,17 @@ class CollaborativeCartBusinessFactory extends AbstractBusinessFactory
             $this->createQuoteWriter(),
             $this->createCompanyUserReader(),
             $this->getPermissionFacade()
+        );
+    }
+
+    /**
+     * @return \FondOfSpryker\Zed\CollaborativeCart\Business\Releaser\CartReleaserInterface
+     */
+    public function createCartReleaser(): CartReleaserInterface
+    {
+        return new CartReleaser(
+            $this->createQuoteReader(),
+            $this->createQuoteWriter()
         );
     }
 

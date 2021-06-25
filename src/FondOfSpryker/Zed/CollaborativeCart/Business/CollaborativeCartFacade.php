@@ -5,6 +5,8 @@ namespace FondOfSpryker\Zed\CollaborativeCart\Business;
 use Generated\Shared\Transfer\ClaimCartRequestTransfer;
 use Generated\Shared\Transfer\ClaimCartResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ReleaseCartRequestTransfer;
+use Generated\Shared\Transfer\ReleaseCartResponseTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -39,5 +41,19 @@ class CollaborativeCartFacade extends AbstractFacade implements CollaborativeCar
     public function claimCart(ClaimCartRequestTransfer $claimCartRequestTransfer): ClaimCartResponseTransfer
     {
         return $this->getFactory()->createCartClaimer()->claim($claimCartRequestTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\ReleaseCartRequestTransfer $releaseCartRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\ReleaseCartResponseTransfer
+     */
+    public function releaseCart(ReleaseCartRequestTransfer $releaseCartRequestTransfer): ReleaseCartResponseTransfer
+    {
+        return $this->getFactory()->createCartReleaser()->release($releaseCartRequestTransfer);
     }
 }

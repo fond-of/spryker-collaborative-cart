@@ -7,6 +7,7 @@ use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToQuo
 use Generated\Shared\Transfer\ClaimCartRequestTransfer;
 use Generated\Shared\Transfer\QuoteResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ReleaseCartRequestTransfer;
 
 class QuoteReaderTest extends Unit
 {
@@ -14,6 +15,11 @@ class QuoteReaderTest extends Unit
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\ClaimCartRequestTransfer
      */
     protected $claimCartRequestTransferMock;
+
+    /**
+     * @var \Generated\Shared\Transfer\ReleaseCartRequestTransfer|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $releaseCartRequestTransferMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToQuoteFacadeInterface
@@ -46,6 +52,10 @@ class QuoteReaderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->releaseCartRequestTransferMock = $this->getMockBuilder(ReleaseCartRequestTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->quoteFacadeMock = $this->getMockBuilder(CollaborativeCartToQuoteFacadeInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -71,28 +81,28 @@ class QuoteReaderTest extends Unit
         $idQuote = 1;
         $newCustomerReference = 'DE-1';
 
-        $this->claimCartRequestTransferMock->expects(self::atLeastOnce())
+        $this->claimCartRequestTransferMock->expects(static::atLeastOnce())
             ->method('getIdQuote')
             ->willReturn($idQuote);
 
-        $this->quoteFacadeMock->expects(self::atLeastOnce())
+        $this->quoteFacadeMock->expects(static::atLeastOnce())
             ->method('findQuoteById')
             ->with($idQuote)
             ->willReturn($this->quoteResponseTransferMock);
 
-        $this->quoteResponseTransferMock->expects(self::atLeastOnce())
+        $this->quoteResponseTransferMock->expects(static::atLeastOnce())
             ->method('getQuoteTransfer')
             ->willReturn($this->quoteTransferMock);
 
-        $this->quoteResponseTransferMock->expects(self::atLeastOnce())
+        $this->quoteResponseTransferMock->expects(static::atLeastOnce())
             ->method('getIsSuccessful')
             ->willReturn(true);
 
-        $this->quoteTransferMock->expects(self::atLeastOnce())
+        $this->quoteTransferMock->expects(static::atLeastOnce())
             ->method('getOriginalCustomerReference')
             ->willReturn(null);
 
-        $this->claimCartRequestTransferMock->expects(self::atLeastOnce())
+        $this->claimCartRequestTransferMock->expects(static::atLeastOnce())
             ->method('getNewCustomerReference')
             ->willReturn($newCustomerReference);
 
@@ -109,23 +119,23 @@ class QuoteReaderTest extends Unit
     {
         $idQuote = null;
 
-        $this->claimCartRequestTransferMock->expects(self::atLeastOnce())
+        $this->claimCartRequestTransferMock->expects(static::atLeastOnce())
             ->method('getIdQuote')
             ->willReturn($idQuote);
 
-        $this->quoteFacadeMock->expects(self::never())
+        $this->quoteFacadeMock->expects(static::never())
             ->method('findQuoteById');
 
-        $this->quoteResponseTransferMock->expects(self::never())
+        $this->quoteResponseTransferMock->expects(static::never())
             ->method('getQuoteTransfer');
 
-        $this->quoteResponseTransferMock->expects(self::never())
+        $this->quoteResponseTransferMock->expects(static::never())
             ->method('getIsSuccessful');
 
-        $this->quoteTransferMock->expects(self::never())
+        $this->quoteTransferMock->expects(static::never())
             ->method('getOriginalCustomerReference');
 
-        $this->claimCartRequestTransferMock->expects(self::never())
+        $this->claimCartRequestTransferMock->expects(static::never())
             ->method('getNewCustomerReference');
 
         self::assertEquals(
@@ -142,33 +152,132 @@ class QuoteReaderTest extends Unit
         $idQuote = 1;
         $originalCustomerReference = 'DE-1';
 
-        $this->claimCartRequestTransferMock->expects(self::atLeastOnce())
+        $this->claimCartRequestTransferMock->expects(static::atLeastOnce())
             ->method('getIdQuote')
             ->willReturn($idQuote);
 
-        $this->quoteFacadeMock->expects(self::atLeastOnce())
+        $this->quoteFacadeMock->expects(static::atLeastOnce())
             ->method('findQuoteById')
             ->with($idQuote)
             ->willReturn($this->quoteResponseTransferMock);
 
-        $this->quoteResponseTransferMock->expects(self::atLeastOnce())
+        $this->quoteResponseTransferMock->expects(static::atLeastOnce())
             ->method('getQuoteTransfer')
             ->willReturn($this->quoteTransferMock);
 
-        $this->quoteResponseTransferMock->expects(self::atLeastOnce())
+        $this->quoteResponseTransferMock->expects(static::atLeastOnce())
             ->method('getIsSuccessful')
             ->willReturn(true);
 
-        $this->quoteTransferMock->expects(self::atLeastOnce())
+        $this->quoteTransferMock->expects(static::atLeastOnce())
             ->method('getOriginalCustomerReference')
             ->willReturn($originalCustomerReference);
 
-        $this->claimCartRequestTransferMock->expects(self::never())
+        $this->claimCartRequestTransferMock->expects(static::never())
             ->method('getNewCustomerReference');
 
         self::assertEquals(
             null,
             $this->quoteReader->getByClaimCartRequest($this->claimCartRequestTransferMock)
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetByReleaseCartRequest(): void
+    {
+        $idQuote = 1;
+        $customerReference = 'DE-1';
+        $originalCustomerReference = 'DE-2';
+
+        $this->releaseCartRequestTransferMock->expects(static::atLeastOnce())
+            ->method('getIdQuote')
+            ->willReturn($idQuote);
+
+        $this->quoteFacadeMock->expects(static::atLeastOnce())
+            ->method('findQuoteById')
+            ->with($idQuote)
+            ->willReturn($this->quoteResponseTransferMock);
+
+        $this->quoteResponseTransferMock->expects(static::atLeastOnce())
+            ->method('getQuoteTransfer')
+            ->willReturn($this->quoteTransferMock);
+
+        $this->quoteResponseTransferMock->expects(static::atLeastOnce())
+            ->method('getIsSuccessful')
+            ->willReturn(true);
+
+        $this->quoteTransferMock->expects(static::atLeastOnce())
+            ->method('getOriginalCustomerReference')
+            ->willReturn($originalCustomerReference);
+
+        $this->quoteTransferMock->expects(static::atLeastOnce())
+            ->method('getCustomerReference')
+            ->willReturn($customerReference);
+
+        $this->releaseCartRequestTransferMock->expects(static::atLeastOnce())
+            ->method('getCurrentCustomerReference')
+            ->willReturn($customerReference);
+
+        self::assertEquals(
+            $this->quoteTransferMock,
+            $this->quoteReader->getByReleaseCartRequest($this->releaseCartRequestTransferMock)
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetByReleaseCartRequestWithoutIdQuote(): void
+    {
+        $this->releaseCartRequestTransferMock->expects(static::atLeastOnce())
+            ->method('getIdQuote')
+            ->willReturn(null);
+
+        $this->quoteFacadeMock->expects(static::never())
+            ->method('findQuoteById');
+
+        $this->releaseCartRequestTransferMock->expects(static::never())
+            ->method('getCurrentCustomerReference');
+
+        self::assertEquals(
+            null,
+            $this->quoteReader->getByReleaseCartRequest($this->releaseCartRequestTransferMock)
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetByReleaseCartRequestWithoutExistingQuote(): void
+    {
+        $idQuote = 1;
+        $customerReference = 'DE-1';
+        $originalCustomerReference = 'DE-2';
+
+        $this->releaseCartRequestTransferMock->expects(static::atLeastOnce())
+            ->method('getIdQuote')
+            ->willReturn($idQuote);
+
+        $this->quoteFacadeMock->expects(static::atLeastOnce())
+            ->method('findQuoteById')
+            ->with($idQuote)
+            ->willReturn($this->quoteResponseTransferMock);
+
+        $this->quoteResponseTransferMock->expects(static::atLeastOnce())
+            ->method('getQuoteTransfer')
+            ->willReturn(null);
+
+        $this->quoteResponseTransferMock->expects(static::never())
+            ->method('getIsSuccessful');
+
+        $this->releaseCartRequestTransferMock->expects(static::never())
+            ->method('getCurrentCustomerReference');
+
+        self::assertEquals(
+            null,
+            $this->quoteReader->getByReleaseCartRequest($this->releaseCartRequestTransferMock)
         );
     }
 }

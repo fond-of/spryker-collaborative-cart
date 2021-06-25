@@ -5,6 +5,7 @@ namespace FondOfSpryker\Zed\CollaborativeCart\Business;
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\CartClaimer;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteExpander;
+use FondOfSpryker\Zed\CollaborativeCart\Business\Releaser\CartReleaser;
 use FondOfSpryker\Zed\CollaborativeCart\CollaborativeCartDependencyProvider;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserReferenceFacadeInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeInterface;
@@ -110,6 +111,32 @@ class CollaborativeCartBusinessFactoryTest extends Unit
         self::assertInstanceOf(
             CartClaimer::class,
             $this->collaborativeCartBusinessFactory->createCartClaimer()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testCreateCartReleaser(): void
+    {
+        $this->containerMock->expects($this->atLeastOnce())
+            ->method('has')
+            ->willReturn(true);
+
+        $this->containerMock->expects($this->atLeastOnce())
+            ->method('get')
+            ->withConsecutive(
+                [CollaborativeCartDependencyProvider::FACADE_QUOTE],
+                [CollaborativeCartDependencyProvider::FACADE_QUOTE]
+            )->willReturnOnConsecutiveCalls(
+                $this->quoteFacadeMock,
+                $this->quoteFacadeMock,
+                $this->permissionFacadeMock
+            );
+
+        self::assertInstanceOf(
+            CartReleaser::class,
+            $this->collaborativeCartBusinessFactory->createCartReleaser()
         );
     }
 
