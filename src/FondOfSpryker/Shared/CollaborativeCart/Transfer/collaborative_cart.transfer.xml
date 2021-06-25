@@ -14,6 +14,18 @@
         <property name="quote" type="Quote"/>
     </transfer>
 
+    <transfer name="ReleaseCartRequest">
+        <property name="idQuote" type="int"/>
+        <property name="currentIdCustomer" type="int"/>
+        <property name="currentCustomerReference" type="string"/>
+    </transfer>
+
+    <transfer name="ReleaseCartResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="error" type="string"/>
+        <property name="quote" type="Quote"/>
+    </transfer>
+
     <transfer name="Quote">
         <property name="OriginalCustomer" type="Customer"/>
         <property name="OriginalCompanyUser" type="CompanyUser"/>

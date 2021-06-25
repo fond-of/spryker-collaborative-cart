@@ -5,9 +5,12 @@ namespace FondOfSpryker\Zed\CollaborativeCart\Business;
 use Codeception\Test\Unit;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\CartClaimerInterface;
 use FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteExpanderInterface;
+use FondOfSpryker\Zed\CollaborativeCart\Business\Releaser\CartReleaserInterface;
 use Generated\Shared\Transfer\ClaimCartRequestTransfer;
 use Generated\Shared\Transfer\ClaimCartResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\ReleaseCartRequestTransfer;
+use Generated\Shared\Transfer\ReleaseCartResponseTransfer;
 
 class CollaborativeCartFacadeTest extends Unit
 {
@@ -30,6 +33,21 @@ class CollaborativeCartFacadeTest extends Unit
      * @var \PHPUnit\Framework\MockObject\MockObject|\Generated\Shared\Transfer\ClaimCartResponseTransfer
      */
     protected $claimCartResponseTransferMock;
+
+    /**
+     * @var \FondOfSpryker\Zed\CollaborativeCart\Business\Releaser\CartReleaserInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $cartReleaserMock;
+
+    /**
+     * @var \Generated\Shared\Transfer\ReleaseCartRequestTransfer|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $releaseCartRequestTransferMock;
+
+    /**
+     * @var \Generated\Shared\Transfer\ReleaseCartResponseTransfer|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $releaseCartResponseTransferMock;
 
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject|\FondOfSpryker\Zed\CollaborativeCart\Business\Model\QuoteExpanderInterface
@@ -69,6 +87,18 @@ class CollaborativeCartFacadeTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->cartReleaserMock = $this->getMockBuilder(CartReleaserInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->releaseCartRequestTransferMock = $this->getMockBuilder(ReleaseCartRequestTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->releaseCartResponseTransferMock = $this->getMockBuilder(ReleaseCartResponseTransfer::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->quoteExpanderMock = $this->getMockBuilder(QuoteExpanderInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -98,6 +128,26 @@ class CollaborativeCartFacadeTest extends Unit
         self::assertEquals(
             $this->claimCartResponseTransferMock,
             $this->collaborativeCartFacade->claimCart($this->claimCartRequestTransferMock)
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testReleaseCart(): void
+    {
+        $this->collaborativeCartBusinessFactoryMock->expects(self::atLeastOnce())
+            ->method('createCartReleaser')
+            ->willReturn($this->cartReleaserMock);
+
+        $this->cartReleaserMock->expects(self::atLeastOnce())
+            ->method('release')
+            ->with($this->releaseCartRequestTransferMock)
+            ->willReturn($this->releaseCartResponseTransferMock);
+
+        self::assertEquals(
+            $this->releaseCartResponseTransferMock,
+            $this->collaborativeCartFacade->releaseCart($this->releaseCartRequestTransferMock)
         );
     }
 
