@@ -16,7 +16,6 @@
 
     <transfer name="ReleaseCartRequest">
         <property name="idQuote" type="int"/>
-        <property name="currentIdCustomer" type="int"/>
         <property name="currentCustomerReference" type="string"/>
     </transfer>
 
