@@ -19,6 +19,10 @@ class QuoteExpander implements QuoteExpanderInterface
      */
     protected $companyUserReferenceFacade;
 
+    /**
+     * @param \FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCustomerFacadeInterface $customerFacade
+     * @param \FondOfSpryker\Zed\CollaborativeCart\Dependency\Facade\CollaborativeCartToCompanyUserReferenceFacadeInterface $companyUserReferenceFacade
+     */
     public function __construct(
         CollaborativeCartToCustomerFacadeInterface $customerFacade,
         CollaborativeCartToCompanyUserReferenceFacadeInterface $companyUserReferenceFacade
