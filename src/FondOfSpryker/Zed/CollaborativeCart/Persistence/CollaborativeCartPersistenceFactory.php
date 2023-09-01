@@ -2,9 +2,9 @@
 
 namespace FondOfSpryker\Zed\CollaborativeCart\Persistence;
 
+use FondOfImpala\Zed\CompanyUsersRestApi\Persistence\Mapper\CompanyUserMapper;
+use FondOfImpala\Zed\CompanyUsersRestApi\Persistence\Mapper\CompanyUserMapperInterface;
 use FondOfSpryker\Zed\CollaborativeCart\CollaborativeCartDependencyProvider;
-use FondOfSpryker\Zed\CompanyUsersRestApi\Persistence\Mapper\CompanyUserMapper;
-use FondOfSpryker\Zed\CompanyUsersRestApi\Persistence\Mapper\CompanyUserMapperInterface;
 use Orm\Zed\CompanyUser\Persistence\SpyCompanyUserQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
@@ -23,7 +23,7 @@ class CollaborativeCartPersistenceFactory extends AbstractPersistenceFactory
     }
 
     /**
-     * @return \FondOfSpryker\Zed\CompanyUsersRestApi\Persistence\Mapper\CompanyUserMapperInterface
+     * @return \FondOfImpala\Zed\CompanyUsersRestApi\Persistence\Mapper\CompanyUserMapperInterface
      */
     public function createCompanyUserMapper(): CompanyUserMapperInterface
     {
